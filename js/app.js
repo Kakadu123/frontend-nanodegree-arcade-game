@@ -7,6 +7,7 @@ var Enemy = function() {
     // a helper we've provided to easily load images
     this.x = -15;
     this.y = -25 + Math.floor((Math.random() * 3) + 1) * 85;
+    this.pace = 2 + Math.floor(Math.random() * 3) ;
     this.sprite = 'images/enemy-bug.png';
 }
 
@@ -16,16 +17,55 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    if(this.x < 505) {
-      this.x = this.x + 3;
-    //    this.x = 0;
-    //    this.y = -25 + Math.floor((Math.random() * 3) + 1) * 85;
-    }
+    this.x = this.x + this.pace;
 }
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+// Enemies our player must avoid
+var Player = function() {
+    this.x = 202;
+    this.y = 390;
+    this.sprite = 'images/char-boy.png';
+}
+
+Player.prototype.update = function(dt) {
+    // You should multiply any movement by the dt parameter
+    // which will ensure the game runs at the same speed for
+    // all computers.
+}
+
+// Draw the enemy on the screen, required method for game
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+Player.prototype.handleInput = function(clicked_button) {
+    switch(clicked_button) {
+        case 'up':
+        if (this.y - 85 >= 0) {
+           this.y = this.y - 85;
+       }
+       break;
+       case 'down':
+       if (this.y + 85 <= 390) {
+           this.y = this.y + 85;
+       }
+       break;
+       case 'left':
+       if (this.x - 100 >= 0) {
+           this.x = this.x - 100;
+       }
+       break;
+       case 'right':
+       if (this.x + 100 <= 500) {
+           this.x = this.x + 100;
+       }
+       break;
+   }
 }
 
 // Now write your own player class
@@ -41,13 +81,24 @@ var allEnemies = [];
 var enemy_instance = new Enemy();
 allEnemies.push(enemy_instance);
 
+// Function triggered every 400ms to maintain enemies
 setInterval(
     function() {
-         if( Math.random() > 0.5 )  {
-            var enemy_instance = new Enemy();
-            allEnemies.push(enemy_instance);
-         }
-    }, 500);
+    // Random addition of new enemies + restriction to 5 enemies max
+    if( Math.random() > 0.5 && allEnemies.length < 5)  {
+        var enemy_instance = new Enemy();
+        allEnemies.push(enemy_instance);
+    }
+    // Removal of enemies that went out of display area
+    for(var i = allEnemies.length - 1; i >= 0; i--) {
+        if(allEnemies[i].x >= 505) {
+           allEnemies.splice(i, 1);
+       }
+    console.log(allEnemies.length);
+   }
+}, 400);
+
+var player = new Player();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
