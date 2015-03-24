@@ -10,7 +10,7 @@ var Enemy = function() {
 	// The image/sprite for our enemies, this uses
 	// a helper we've provided to easily load images
 	this.sprite = 'images/enemy-bug.png';
-}
+};
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -19,12 +19,12 @@ Enemy.prototype.update = function(dt) {
 	// which will ensure the game runs at the same speed for
 	// all computers.
 	this.x = this.x + this.pace * dt;
-}
+};
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
 	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 // Enemies our player must avoid
 var Player = function() {
@@ -33,16 +33,16 @@ var Player = function() {
 	this.sprite = 'images/char-boy.png';
 	// Initial game Status set to Welcome, i.e. display message
 	this.gameStatus = "Welcome";
-}
+};
 
 // collision detection relating to this update method is handled in engine.js update method
 Player.prototype.update = function(dt) {
-}
+};
 
 // Draw the enemy on the screen, required method for game
 Player.prototype.render = function() {
 	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 // Timeout function to change game status
 Player.prototype.changeStatus = function() {
@@ -50,7 +50,7 @@ Player.prototype.changeStatus = function() {
 	setTimeout(function() {
 		temp.gameStatus = 'playing';
 	}, 1500);
-}
+};
 
 // Handles player's input
 Player.prototype.handleInput = function(clicked_button) {
@@ -81,7 +81,7 @@ Player.prototype.handleInput = function(clicked_button) {
 		}
 		break;
 	}
-}
+};
 
 // Objects instantiation
 // all enemy objects in an array called allEnemies
